@@ -58,8 +58,7 @@ def validate_outlook_token_audience(payload):
   if 'aud' not in payload:
     raise APIException('Missing audience in payload')
 
-  audience = payload['aud'].replace('/', '').replace('//', '').replace('https:', '')
-  if audience != 'localhost:3000' and audience != 'bondreach.com':
+  if payload['aud'] != settings.OUTLOOK_AUDIENCE:
     raise APIException('Wrong audience')
 
 
@@ -104,11 +103,6 @@ def get_signing_certificate(auth_metadata_endpoint):
 
 
 def vaildate_outlook_token_signature_and_get_unique_identifier(raw_token, payload):
-  if settings.DEBUG:
-    valid_audience = 'https://localhost:3000/'
-  else:
-    valid_audience = 'https://outlook.bondreach.com/'
-
   app_context = json.loads(payload['appctx'])
   auth_metadata_endpoint = app_context['amurl']
 
@@ -116,7 +110,7 @@ def vaildate_outlook_token_signature_and_get_unique_identifier(raw_token, payloa
   cert_obj = load_pem_x509_certificate(cert_str, default_backend())
   public_key = cert_obj.public_key()
   try:
-    verified_payload = jwt.decode(raw_token, public_key, algorithms=['RS256'], audience=valid_audience)
+    verified_payload = jwt.decode(raw_token, public_key, algorithms=['RS256'], audience=settings.OUTLOOK_AUDIENCE)
     verified_app_context = json.loads(verified_payload['appctx'])
   except:
     APIException('Cannot verify Outlook token')
