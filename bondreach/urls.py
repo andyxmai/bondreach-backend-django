@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from region import views
+
 
 urlpatterns = [
   url(r'', include('account.api.urls')),
@@ -22,4 +24,5 @@ urlpatterns = [
   url(r'', include('investment.api.urls')),
   url(r'', include('region.api.urls')),
   url(r'^admin/', admin.site.urls),
+  url(r'^.well-known/acme-challenge/QO5VmmdZPJa0X2NYdPaF8GplsTg2IPekQu5OpZ1mKS8', views.index, name='index'),
 ]
