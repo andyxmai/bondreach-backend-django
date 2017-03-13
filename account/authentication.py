@@ -59,7 +59,8 @@ def validate_outlook_token_audience(payload):
     raise APIException('Missing audience in payload')
 
   if payload['aud'] != settings.OUTLOOK_AUDIENCE:
-    raise APIException('Wrong audience')
+    msg = 'Wrong audience: ' + payload['aud'] + 'should be ' + settings.OUTLOOK_AUDIENCE
+    raise APIException(msg)
 
 
 def validate_outlook_token_version(payload):
