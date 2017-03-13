@@ -25,7 +25,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '394*^%&-z+k__-*^jl0-kv%=x-9u7(r7x=fz)9073ptb%go37_'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', True)
+DEBUG_CONFIG_VAR = os.environ.get('DEBUG', '')
+DEBUG = DEBUG_CONFIG_VAR == ''
 
 
 ALLOWED_HOSTS = []
@@ -88,19 +89,17 @@ WSGI_APPLICATION = 'bondreach.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
-if DEBUG:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'bondreach_dev',
-            'USER': 'bondreach_dev_user',
-            'PASSWORD': 'bondreach',
-            'HOST': 'localhost',
-            'PORT': '',
-        }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'bondreach_dev',
+        'USER': 'bondreach_dev_user',
+        'PASSWORD': 'bondreach',
+        'HOST': 'localhost',
+        'PORT': '',
     }
-else:
-    DATABASES = {}
+}
+if not DEBUG:
     db_from_env = dj_database_url.config(conn_max_age=500)
     DATABASES['default'].update(db_from_env)
 
