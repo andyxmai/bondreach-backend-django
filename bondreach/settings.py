@@ -28,8 +28,10 @@ SECRET_KEY = '394*^%&-z+k__-*^jl0-kv%=x-9u7(r7x=fz)9073ptb%go37_'
 DEBUG_CONFIG_VAR = os.environ.get('DEBUG', '')
 DEBUG = DEBUG_CONFIG_VAR == ''
 
-
-ALLOWED_HOSTS = ['.herokuapp.com', '.bondreach.com']
+if DEBUG:
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]']
+else:
+    ALLOWED_HOSTS = ['.herokuapp.com', '.bondreach.com']
 
 
 # Application definition

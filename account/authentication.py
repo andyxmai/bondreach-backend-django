@@ -2,6 +2,7 @@ from account.utils import base64_decode
 from cryptography.x509 import load_pem_x509_certificate
 from cryptography.hazmat.backends import default_backend
 from datetime import datetime, timedelta
+from django.conf import settings
 import hashlib
 import jwt
 import json
@@ -103,14 +104,22 @@ def get_signing_certificate(auth_metadata_endpoint):
 
 
 def vaildate_outlook_token_signature_and_get_unique_identifier(raw_token, payload):
+  if settings.DEBUG:
+    valid_audience = 'https://localhost:3000/'
+  else:
+    valid_audience = 'https://outlook.bondreach.com/'
+
   app_context = json.loads(payload['appctx'])
   auth_metadata_endpoint = app_context['amurl']
 
   cert_str = get_signing_certificate(auth_metadata_endpoint)
   cert_obj = load_pem_x509_certificate(cert_str, default_backend())
   public_key = cert_obj.public_key()
-  verified_payload = jwt.decode(raw_token, public_key, algorithms=['RS256'], audience='https://localhost:3000/')
-  verified_app_context = json.loads(verified_payload['appctx'])
+  try:
+    verified_payload = jwt.decode(raw_token, public_key, algorithms=['RS256'], audience=valid_audience)
+    verified_app_context = json.loads(verified_payload['appctx'])
+  except:
+    APIException('Cannot verify Outlook token')
 
   #  has Exchange ID and auth metadata endpoint
   payload_app_context_bytes = (verified_app_context['msexchuid'] + verified_app_context['amurl']).encode()
