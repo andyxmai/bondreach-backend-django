@@ -28,7 +28,7 @@ SECRET_KEY = '394*^%&-z+k__-*^jl0-kv%=x-9u7(r7x=fz)9073ptb%go37_'
 DEBUG_CONFIG_VAR = os.environ.get('DEBUG', '')
 DEBUG = DEBUG_CONFIG_VAR == ''
 
-OUTLOOK_AUDIENCE = 'https://localhost:3000/' if DEBUG else 'https://outlook.bondreach.com/'
+OUTLOOK_AUDIENCE = 'https://localhost:3000' if DEBUG else 'https://outlook.bondreach.com'
 
 if DEBUG:
     ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]']
