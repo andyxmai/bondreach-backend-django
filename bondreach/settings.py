@@ -29,7 +29,7 @@ DEBUG_CONFIG_VAR = os.environ.get('DEBUG', '')
 DEBUG = DEBUG_CONFIG_VAR == ''
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.herokuapp.com', '.bondreach.com']
 
 
 # Application definition
