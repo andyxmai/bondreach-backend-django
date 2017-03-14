@@ -183,11 +183,11 @@ JWT_AUTH = {
 
 CSRF_COOKIE_NAME = "XSRF-TOKEN"
 
-# CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
-CORS_ORIGIN_REGEX_WHITELIST = (
-    r'^(https?://)?(\w+\.)?localhost:(?:3000|8080|8000|9000)$',
-    r'^(https?://)?(\w+\.)?bondreach\.com$',
-    # r'^(https?://)?(\w+\.)?live\.com$',  # to allove outlook.live.com to make requests
-)
+# CORS_ORIGIN_REGEX_WHITELIST = (
+#     r'^(https?://)?(\w+\.)?localhost:(?:3000|8080|8000|9000)$',
+#     r'^(https?://)?(\w+\.)?bondreach\.com$',
+#     # r'^(https?://)?(\w+\.)?live\.com$',  # to allove outlook.live.com to make requests
+# )
