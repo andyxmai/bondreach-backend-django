@@ -33,12 +33,12 @@ def get_user_jwt_token(user):
 
 def get_user_from_jwt_value(jwt_value):
   try:
-      payload = jwt_decode_handler(jwt_value)
+    payload = jwt_decode_handler(jwt_value)
   except jwt.ExpiredSignature:
-      msg = 'Signature has expired.'
-      raise exceptions.AuthenticationFailed(msg)
+    msg = 'Signature has expired.'
+    raise exceptions.AuthenticationFailed(msg)
   except jwt.DecodeError:
-      msg = 'Error decoding signature.'
-      raise exceptions.AuthenticationFailed(msg)
+    msg = 'Error decoding signature.'
+    raise exceptions.AuthenticationFailed(msg)
 
   return JSONWebTokenAuthentication().authenticate_credentials(payload)

@@ -57,18 +57,19 @@ class OutlookAuth(APIView):
     Once the unique is obtained. Create User and Outlook User instances
     """
     try:
+      user = User.objects.get(email=email)
       outlook_user = OutlookUser.objects.get(unique_identifier=unique_identifier)
-      user = outlook_user.user
       customer = user.customer_profile
-    except OutlookUser.DoesNotExist:
-      # Register the Outlook user
+    except User.DoesNotExist:
       user = User.objects.create_user(email)
       outlook_user = OutlookUser(unique_identifier=unique_identifier, user=user)
       outlook_user.save()
       customer = Customer(user=user)
       customer.save()
+    except OutlookUser.DoesNotExist:
+      return Response('Invalid Outlook credentials', status=status.HTTP_403_FORBIDDEN)
     except Exception as e:
-      return Response(e, status=status.HTTP_400_BAD_REQUEST)
+      return Response(e, status=status.HTTP_403_FORBIDDEN)
 
     jwt_token = get_user_jwt_token(user)
 
