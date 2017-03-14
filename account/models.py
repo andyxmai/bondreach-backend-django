@@ -114,4 +114,4 @@ class OutlookUser(models.Model):
   unique_identifier = models.TextField()  # unique id that Outlook gives during auth
 
   def __str__(self):
-    return "Outlook user: " + self.unique_identifier
+    return self.user.email
