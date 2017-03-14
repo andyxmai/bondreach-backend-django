@@ -19,8 +19,11 @@ class OutlookAuth(APIView):
   """
   PATH - /auth/outlook
   """
-
+  authentication_classes = ()
   permission_classes = (permissions.AllowAny,)
+
+  def get(self, request, format=None):
+    return Response('GET not allowed')
 
   def post(self, request, format=None):
     if not request.data or 'token' not in request.data or 'email' not in request.data:
@@ -42,7 +45,6 @@ class OutlookAuth(APIView):
     encoded_payload = token_parts[1]
     signature = token_parts[2]
 
-
     decoded_header = json.loads(base64_decode(encoded_header))
     decoded_payload = json.loads(base64_decode(encoded_payload))
 
@@ -51,7 +53,6 @@ class OutlookAuth(APIView):
     validate_outlook_token_audience(decoded_payload)
     validate_outlook_token_version(decoded_payload)
     unique_identifier = vaildate_outlook_token_signature_and_get_unique_identifier(raw_token, decoded_payload)
-
     """
     Once the unique is obtained. Create User and Outlook User instances
     """
@@ -66,8 +67,8 @@ class OutlookAuth(APIView):
       outlook_user.save()
       customer = Customer(user=user)
       customer.save()
-    except:
-      raise APIException('Failed to get user')
+    except Exception as e:
+      return Response(e, status=status.HTTP_400_BAD_REQUEST)
 
     jwt_token = get_user_jwt_token(user)
 
@@ -78,8 +79,11 @@ class AuthLogin(APIView):
   """
   PATH: /auth/login
   """
-
+  authentication_classes = ()
   permission_classes = (permissions.AllowAny,)
+
+  def get(self, request, format=None):
+    return Response('GET not allowed')
 
   def post(self, request):
     if not request.data or 'token' not in request.data:
