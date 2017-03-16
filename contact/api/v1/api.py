@@ -1,4 +1,5 @@
 import django_filters
+from rest_framework.filters import SearchFilter
 from contact.models import Contact, FollowUp
 from rest_framework import permissions, viewsets
 from contact.api.v1.serializers import ContactSerializer, FollowUpSerializer
@@ -16,8 +17,10 @@ class ContactViewSet(viewsets.ModelViewSet):
   """
 
   serializer_class = ContactSerializer
-  filter_backends = (django_filters.rest_framework.DjangoFilterBackend,)
+  filter_backends = (django_filters.rest_framework.DjangoFilterBackend, SearchFilter,)
   filter_class = ContactFilter
+  # Note (Andy): this is not going to be scalable. Will need ElasticSearch at some point
+  search_fields = ('notes', '^first_name', '^last_name')
 
   def get_queryset(self):
     try:
