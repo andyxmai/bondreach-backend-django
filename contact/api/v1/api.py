@@ -20,7 +20,7 @@ class ContactViewSet(viewsets.ModelViewSet):
   filter_backends = (django_filters.rest_framework.DjangoFilterBackend, SearchFilter,)
   filter_class = ContactFilter
   # Note (Andy): this is not going to be scalable. Will need ElasticSearch at some point
-  search_fields = ('notes', '^first_name', '^last_name')
+  search_fields = ('notes', '^first_name', '^last_name', 'company')
 
   def get_queryset(self):
     try:
