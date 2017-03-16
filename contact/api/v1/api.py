@@ -38,6 +38,13 @@ class ContactViewSet(viewsets.ModelViewSet):
           minimum_investment_size__lte=investment_size,
           maximum_investment_size__gte=investment_size
         )
+
+      target_return = self.request.query_params.get('target_return', None)
+      if target_return is not None:
+        queryset = queryset.filter(
+          minimum_irr_return__lte=target_return,
+          maximum_irr_return__gte=target_return
+        )
     except:  # TODO (Andy): break down the exceptions and log them
       queryset = Contact.objects.none()
 
