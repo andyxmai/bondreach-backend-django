@@ -24,6 +24,10 @@ class Contact(models.Model):
   minimum_investment_size = models.IntegerField(blank=True)
   maximum_investment_size = models.IntegerField(blank=True)
 
+  # IRR return preference: from 0 to 100%
+  minimum_irr_return = models.PositiveSmallIntegerField(blank=True, default=0)
+  maximum_irr_return = models.PositiveSmallIntegerField(blank=True, default=100)
+
   notes = models.TextField(null=True, blank=True)
 
   creator = models.ForeignKey(Customer, related_name='contacts', null=True, blank=True, on_delete=models.CASCADE)
