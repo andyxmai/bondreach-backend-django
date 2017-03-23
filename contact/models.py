@@ -15,7 +15,7 @@ class Contact(models.Model):
   first_name = models.CharField(max_length=100)
   last_name = models.CharField(max_length=100, blank=True)
   email = models.EmailField(blank=True)
-  phone = models.CharField(max_length=20, blank=True)
+  phone = models.CharField(max_length=100, blank=True)
   company = models.CharField(max_length=200, blank=True)
 
   region_preferences = models.ManyToManyField(Region, related_name='interested_contacts', blank=True)
