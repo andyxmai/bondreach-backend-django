@@ -14,7 +14,7 @@ class Command(BaseCommand):
     region_name_id_map = {
       'West': 'e5f0938e-ad3e-4cc5-a7d0-bdb8164ba839',
       'Northeast': '72582df9-d000-46c5-90f8-b8875b5f8ffd',
-      'South': 'bc3de2c8-1936-47d0-a090-3b77a58f160f/',
+      'South': 'bc3de2c8-1936-47d0-a090-3b77a58f160f',
       'Midwest': '44cc6449-aef6-41cd-b510-89e044e797fb'
     }
     investment_type_id_map = {
