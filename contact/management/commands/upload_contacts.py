@@ -27,7 +27,7 @@ class Command(BaseCommand):
     }
 
     # contacts_file = open(os.path.join(settings.BASE_DIR, 'zach_sm.csv'))
-    with open(os.path.join(settings.BASE_DIR, 'zach_sm.csv'), 'r', encoding="ISO-8859-1") as csvfile:
+    with open(os.path.join(settings.BASE_DIR, 'zach.csv'), 'r', encoding="ISO-8859-1") as csvfile:
       contactreader = csv.DictReader(csvfile)
       counter = 0
 
