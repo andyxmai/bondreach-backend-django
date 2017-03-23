@@ -2,6 +2,7 @@ import django_filters
 from rest_framework.filters import SearchFilter
 from contact.models import Contact, FollowUp
 from rest_framework import permissions, viewsets
+from rest_framework.pagination import PageNumberPagination
 from contact.api.v1.serializers import ContactSerializer, FollowUpSerializer
 
 
