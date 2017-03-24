@@ -15,7 +15,7 @@ class FollowUpSerializer(serializers.ModelSerializer):
 class CorrespondenceSerializer(serializers.ModelSerializer):
   class Meta:
     model = Correspondence
-    fields = ('id', 'created_at', 'correspondence_type', 'item_id', 'contact')
+    fields = ('id', 'created_at', 'correspondence_type', 'item_id', 'contact', 'date')
 
 
 class ContactSerializer(serializers.ModelSerializer):

@@ -62,5 +62,6 @@ class Correspondence(models.Model):
   created_at = models.DateTimeField(default=utcnow)
 
   correspondence_type = models.TextField(blank=True)
+  date = models.DateTimeField(null=True, blank=True)
   item_id = models.TextField(blank=True)
   contact = models.ForeignKey('Contact', related_name='correspondences', null=True, on_delete=models.CASCADE)
