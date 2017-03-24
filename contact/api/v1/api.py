@@ -1,9 +1,9 @@
 import django_filters
 from rest_framework.filters import SearchFilter
-from contact.models import Contact, FollowUp
+from contact.models import Contact, FollowUp, Correspondence
 from rest_framework import permissions, viewsets
 from rest_framework.pagination import PageNumberPagination
-from contact.api.v1.serializers import ContactSerializer, FollowUpSerializer
+from contact.api.v1.serializers import ContactSerializer, FollowUpSerializer, CorrespondenceSerializer
 
 
 class ContactFilter(django_filters.rest_framework.FilterSet):
@@ -55,3 +55,8 @@ class ContactViewSet(viewsets.ModelViewSet):
 class FollowUpViewSet(viewsets.ModelViewSet):
   queryset = FollowUp.objects.all()
   serializer_class = FollowUpSerializer
+
+
+class CorrespondenceViewSet(viewsets.ModelViewSet):
+  queryset = Correspondence.objects.all()
+  serializer_class = CorrespondenceSerializer

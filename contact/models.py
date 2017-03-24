@@ -55,3 +55,12 @@ class FollowUp(models.Model):
   frequency = models.CharField(max_length=100)
 
   contact = models.ForeignKey('Contact', related_name='follow_ups', null=True, on_delete=models.CASCADE)
+
+
+class Correspondence(models.Model):
+  id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+  created_at = models.DateTimeField(default=utcnow)
+
+  correspondence_type = models.TextField(blank=True)
+  item_id = models.TextField(blank=True)
+  contact = models.ForeignKey('Contact', related_name='correspondences', null=True, on_delete=models.CASCADE)
