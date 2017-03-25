@@ -22,7 +22,7 @@ class ContactSerializer(serializers.ModelSerializer):
   region_preferences = RegionSerializer(many=True, read_only=False, required=False)
   investment_type_preferences = InvestmentTypeSerializer(many=True, read_only=False, required=False)
   upcoming_follow_up = serializers.SerializerMethodField()
-  correspondences = CorrespondenceSerializer(required=False, many=True)
+  correspondences = CorrespondenceSerializer(required=False, many=True, read_only=True)
 
   def get_upcoming_follow_up(self, obj):
         return obj.get_upcoming_follow_up()
