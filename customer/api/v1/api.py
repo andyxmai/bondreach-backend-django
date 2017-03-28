@@ -1,8 +1,11 @@
 import json
 import requests
+from customer.models import Customer
+from customer.api.v1.serializers import CustomerSerializer
+from rest_framework.decorators import list_route
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import permissions, status
+from rest_framework import permissions, status, viewsets
 
 class BetaList(APIView):
   """
@@ -38,3 +41,21 @@ class BetaList(APIView):
       return Response('Email subscribed', status=status.HTTP_200_OK)
     else:
       r.raise_for_status()
+
+
+class CustomerViewSet(viewsets.ModelViewSet):
+
+  serializer_class = CustomerSerializer
+  queryset = Customer.objects.all()
+  
+  @list_route()
+  def me(self, request, *args, **kwargs):
+    user_id = request.user.id
+    try:
+      customer = Customer.objects.get(user__id=user_id)
+      serializer = self.get_serializer(customer)
+      return Response(serializer.data)
+    except Customer.DoesNotExist:
+      return Response('Customer not found', status=status.HTTP_404_NOT_FOUND)
+    except:
+      return Response('Error getting customer profile', status=status.HTTP_400_BAD_REQUEST)
