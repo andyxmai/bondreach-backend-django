@@ -56,6 +56,9 @@ class FollowUp(models.Model):
 
   contact = models.ForeignKey('Contact', related_name='follow_ups', null=True, on_delete=models.CASCADE)
 
+  def __str__(self):
+    return "{} {} ({}, {})".format(self.contact.first_name, self.contact.last_name, self.begin_date, self.frequency)
+
 
 class Correspondence(models.Model):
   id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -65,3 +68,6 @@ class Correspondence(models.Model):
   date = models.DateTimeField(null=True, blank=True)
   item_id = models.TextField(blank=True)
   contact = models.ForeignKey('Contact', related_name='correspondences', null=True, on_delete=models.CASCADE)
+
+  def __str__(self):
+    return "{} {} ({})".format(self.contact.first_name, self.contact.last_name, self.correspondence_type)
