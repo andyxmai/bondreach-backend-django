@@ -10,7 +10,7 @@ from rest_framework.pagination import PageNumberPagination
 class ContactFilter(django_filters.rest_framework.FilterSet):
   class Meta:
     model = Contact
-    fields = ['investment_type_preferences', 'region_preferences', 'email']
+    fields = ['investment_type_preferences', 'region_preferences', 'email', 'company']
 
 
 class ContactViewSet(viewsets.ModelViewSet):
