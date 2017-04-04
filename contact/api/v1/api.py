@@ -83,7 +83,7 @@ class ContactCompanyViewSet(viewsets.ReadOnlyModelViewSet):
           minimum_irr_return__lte=target_return,
           maximum_irr_return__gte=target_return
         )
-    except:  # TODO (Andy): break down the exceptions and log them
+    except:  # TODO: break down the exceptions and log them
       queryset = Contact.objects.none()
 
     return queryset.values('company').annotate(
