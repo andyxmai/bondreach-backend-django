@@ -74,3 +74,13 @@ class ContactSerializer(serializers.ModelSerializer):
         instance.investment_type_preferences.add(investment_type)
     
     return instance
+
+
+class ContactCompanySerialzier(serializers.ModelSerializer):
+
+  class Meta:
+    model = Contact
+    fields = ('company',
+      'minimum_investment_size', 'maximum_investment_size',
+      'minimum_irr_return', 'maximum_irr_return',
+    )
