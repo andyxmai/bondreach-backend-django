@@ -1,6 +1,8 @@
 import django_filters
 from contact.models import Contact, FollowUp, Correspondence
+from contact.utils import filter_contact_queryset
 from contact.api.v1.serializers import ContactSerializer, FollowUpSerializer, CorrespondenceSerializer, ContactCompanySerialzier
+from django.contrib.postgres.aggregates.general import ArrayAgg
 from django.db.models import Min, Max
 from rest_framework.filters import SearchFilter
 from rest_framework import permissions, viewsets
@@ -29,69 +31,14 @@ class ContactViewSet(viewsets.ModelViewSet):
       user = self.request.user
       creator = user.customer_profile
       company = creator.company
-      if company and company.allow_contact_sharing:
-        queryset = Contact.objects.filter(creator__company_id=company.id)
-      else:
-        queryset = Contact.objects.filter(creator=creator)
-      
       investment_size = self.request.query_params.get('investment_size', None)
-      if investment_size is not None:
-        queryset = queryset.filter(
-          minimum_investment_size__lte=investment_size,
-          maximum_investment_size__gte=investment_size
-        )
-
       target_return = self.request.query_params.get('target_return', None)
-      if target_return is not None:
-        queryset = queryset.filter(
-          minimum_irr_return__lte=target_return,
-          maximum_irr_return__gte=target_return
-        )
+
+      queryset = filter_contact_queryset(company, creator, investment_size, target_return)
     except:  # TODO (Andy): break down the exceptions and log them
       queryset = Contact.objects.none()
 
     return queryset
-
-
-class ContactCompanyViewSet(viewsets.ReadOnlyModelViewSet):
-  serializer_class = ContactCompanySerialzier
-  filter_backends = (django_filters.rest_framework.DjangoFilterBackend, SearchFilter,)
-  filter_class = ContactFilter
-  # Note (Andy): this is not going to be scalable. Will need ElasticSearch at some point
-  search_fields = ('notes', '^first_name', '^last_name', 'company')
-
-  def get_queryset(self):
-    try:
-      user = self.request.user
-      creator = user.customer_profile
-      company = creator.company
-      if company and company.allow_contact_sharing:
-        queryset = Contact.objects.filter(creator__company_id=company.id)
-      else:
-        queryset = Contact.objects.filter(creator=creator)
-      
-      investment_size = self.request.query_params.get('investment_size', None)
-      if investment_size is not None:
-        queryset = queryset.filter(
-          minimum_investment_size__lte=investment_size,
-          maximum_investment_size__gte=investment_size
-        )
-
-      target_return = self.request.query_params.get('target_return', None)
-      if target_return is not None:
-        queryset = queryset.filter(
-          minimum_irr_return__lte=target_return,
-          maximum_irr_return__gte=target_return
-        )
-    except:  # TODO: break down the exceptions and log them
-      queryset = Contact.objects.none()
-
-    return queryset.values('company').annotate(
-            minimum_investment_size=Min('minimum_investment_size'), 
-            maximum_investment_size=Max('maximum_investment_size'),
-            minimum_irr_return=Min('minimum_irr_return'),
-            maximum_irr_return=Min('maximum_irr_return'),
-          )
 
 
 """
@@ -113,29 +60,76 @@ class DownloadContactViewSet(viewsets.ReadOnlyModelViewSet):
       user = self.request.user
       creator = user.customer_profile
       company = creator.company
-      if company and company.allow_contact_sharing:
-        queryset = Contact.objects.filter(creator__company_id=company.id)
-      else:
-        queryset = Contact.objects.filter(creator=creator)
-      
       investment_size = self.request.query_params.get('investment_size', None)
-      if investment_size is not None:
-        queryset = queryset.filter(
-          minimum_investment_size__lte=investment_size,
-          maximum_investment_size__gte=investment_size
-        )
-
       target_return = self.request.query_params.get('target_return', None)
-      if target_return is not None:
-        queryset = queryset.filter(
-          minimum_irr_return__lte=target_return,
-          maximum_irr_return__gte=target_return
-        )
-
+      
+      queryset = filter_contact_queryset(company, creator, investment_size, target_return)
     except:  # TODO (Andy): break down the exceptions and log them
       queryset = Contact.objects.none()
 
     return queryset
+
+
+class ContactCompanyViewSet(viewsets.ReadOnlyModelViewSet):
+  serializer_class = ContactCompanySerialzier
+  filter_backends = (django_filters.rest_framework.DjangoFilterBackend, SearchFilter,)
+  filter_class = ContactFilter
+  # Note (Andy): this is not going to be scalable. Will need ElasticSearch at some point
+  search_fields = ('notes', '^first_name', '^last_name', 'company')
+
+  def get_queryset(self):
+    try:
+      user = self.request.user
+      creator = user.customer_profile
+      company = creator.company
+      investment_size = self.request.query_params.get('investment_size', None)
+      target_return = self.request.query_params.get('target_return', None)
+
+      queryset = filter_contact_queryset(company, creator, investment_size, target_return)
+    except:  # TODO: break down the exceptions and log them
+      queryset = Contact.objects.none()
+
+    return queryset.values('company').annotate(
+            minimum_investment_size=Min('minimum_investment_size'), 
+            maximum_investment_size=Max('maximum_investment_size'),
+            minimum_irr_return=Min('minimum_irr_return'),
+            maximum_irr_return=Min('maximum_irr_return'),
+            first_names=ArrayAgg('first_name'),
+            last_names=ArrayAgg('last_name'),
+            emails=ArrayAgg('email'),
+          )
+
+
+class DownloadContactCompanyViewSet(viewsets.ReadOnlyModelViewSet):
+  pagination_class = None
+
+  serializer_class = ContactCompanySerialzier
+  filter_backends = (django_filters.rest_framework.DjangoFilterBackend, SearchFilter,)
+  filter_class = ContactFilter
+  # Note (Andy): this is not going to be scalable. Will need ElasticSearch at some point
+  search_fields = ('notes', '^first_name', '^last_name', 'company')
+
+  def get_queryset(self):
+    try:
+      user = self.request.user
+      creator = user.customer_profile
+      company = creator.company
+      investment_size = self.request.query_params.get('investment_size', None)
+      target_return = self.request.query_params.get('target_return', None)
+
+      queryset = filter_contact_queryset(company, creator, investment_size, target_return)
+    except:  # TODO: break down the exceptions and log them
+      queryset = Contact.objects.none()
+
+    return queryset.values('company').annotate(
+            minimum_investment_size=Min('minimum_investment_size'), 
+            maximum_investment_size=Max('maximum_investment_size'),
+            minimum_irr_return=Min('minimum_irr_return'),
+            maximum_irr_return=Min('maximum_irr_return'),
+            first_names=ArrayAgg('first_name'),
+            last_names=ArrayAgg('last_name'),
+            emails=ArrayAgg('email'),
+          )
 
 
 class FollowUpViewSet(viewsets.ModelViewSet):

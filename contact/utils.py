@@ -36,3 +36,25 @@ def get_upcoming_follow_up(begin_date, frequency):
     return begin_date + relativedelta(years=+num_years + 1)
   else:
     return None
+
+def filter_contact_queryset(company, creator, investment_size, target_return):
+  from contact.models import Contact
+  
+  if company and company.allow_contact_sharing:
+    queryset = Contact.objects.filter(creator__company_id=company.id)
+  else:
+    queryset = Contact.objects.filter(creator=creator)
+  
+  if investment_size is not None:
+    queryset = queryset.filter(
+      minimum_investment_size__lte=investment_size,
+      maximum_investment_size__gte=investment_size
+    )
+
+  if target_return is not None:
+    queryset = queryset.filter(
+      minimum_irr_return__lte=target_return,
+      maximum_irr_return__gte=target_return
+    )
+
+  return queryset

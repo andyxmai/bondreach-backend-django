@@ -77,10 +77,14 @@ class ContactSerializer(serializers.ModelSerializer):
 
 
 class ContactCompanySerialzier(serializers.ModelSerializer):
+  emails = serializers.ListField(child = serializers.CharField())
+  first_names = serializers.ListField(child = serializers.CharField())
+  last_names = serializers.ListField(child = serializers.CharField())
 
   class Meta:
     model = Contact
     fields = ('company',
       'minimum_investment_size', 'maximum_investment_size',
-      'minimum_irr_return', 'maximum_irr_return',
+      'minimum_irr_return', 'maximum_irr_return', 'emails',
+      'first_names', 'last_names',
     )
