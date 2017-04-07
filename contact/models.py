@@ -28,6 +28,14 @@ class Contact(models.Model):
   minimum_irr_return = models.PositiveSmallIntegerField(blank=True, default=0)
   maximum_irr_return = models.PositiveSmallIntegerField(blank=True, default=100)
 
+  EQUITY = 'EQUITY'
+  DEBT = 'DEBT'
+  INVESTMENT_SIZE_CHOICES = (
+    (EQUITY, 'equity'),
+    (DEBT, 'debt'),
+  )
+  investment_type = models.CharField(max_length=100, blank=True, choices=INVESTMENT_SIZE_CHOICES)
+
   notes = models.TextField(null=True, blank=True)
 
   creator = models.ForeignKey(Customer, related_name='contacts', null=True, blank=True, on_delete=models.CASCADE)

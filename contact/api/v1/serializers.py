@@ -31,7 +31,7 @@ class ContactSerializer(serializers.ModelSerializer):
     model = Contact
     fields = ('id', 'first_name', 'last_name', 
       'email', 'phone', 'company',
-      'minimum_investment_size', 'maximum_investment_size',
+      'minimum_investment_size', 'maximum_investment_size', 'investment_type',
       'minimum_irr_return', 'maximum_irr_return',
       'region_preferences', 'investment_type_preferences',
       'notes', 'creator', 'upcoming_follow_up', 'correspondences',
