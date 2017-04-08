@@ -8,6 +8,5 @@ router.register(r'customers', api.CustomerViewSet)
 
 urlpatterns = [
   url(r'^customers/beta/$', api.BetaList.as_view()),
-  url(r'^team-invites/$', api.TeamInvite.as_view()),
   url(r'^', include(router.urls)),
 ]
