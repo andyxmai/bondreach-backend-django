@@ -1,13 +1,14 @@
 from account.api.v1.serializers import UserSerializer
-from customer.models import Customer, Company
+from customer.models import Customer, Team
 from rest_framework import serializers
 
 
-class CompanySerializer(serializers.ModelSerializer):
+class TeamSerializer(serializers.ModelSerializer):
+  
   id = serializers.UUIDField(required=False)
 
   class Meta:
-    model = Company
+    model = Team
     fields = ('id', 'name')
 
 
@@ -15,8 +16,8 @@ class CustomerSerializer(serializers.ModelSerializer):
 
   id = serializers.UUIDField(required=False)
   user = UserSerializer(read_only=True)
-  company = CompanySerializer(read_only=True)
+  team = TeamSerializer(required=False)
 
   class Meta:
     model = Customer
-    fields = ('id', 'user', 'company')
+    fields = ('id', 'user', 'team')

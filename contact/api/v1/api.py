@@ -30,11 +30,11 @@ class ContactViewSet(viewsets.ModelViewSet):
     try:
       user = self.request.user
       creator = user.customer_profile
-      company = creator.company
+      team = creator.team
       investment_size = self.request.query_params.get('investment_size', None)
       target_return = self.request.query_params.get('target_return', None)
 
-      queryset = filter_contact_queryset(company, creator, investment_size, target_return)
+      queryset = filter_contact_queryset(team, creator, investment_size, target_return)
     except:  # TODO (Andy): break down the exceptions and log them
       queryset = Contact.objects.none()
 
@@ -59,11 +59,11 @@ class DownloadContactViewSet(viewsets.ReadOnlyModelViewSet):
     try:
       user = self.request.user
       creator = user.customer_profile
-      company = creator.company
+      team = creator.team
       investment_size = self.request.query_params.get('investment_size', None)
       target_return = self.request.query_params.get('target_return', None)
       
-      queryset = filter_contact_queryset(company, creator, investment_size, target_return)
+      queryset = filter_contact_queryset(team, creator, investment_size, target_return)
     except:  # TODO (Andy): break down the exceptions and log them
       queryset = Contact.objects.none()
 
@@ -81,11 +81,11 @@ class ContactCompanyViewSet(viewsets.ReadOnlyModelViewSet):
     try:
       user = self.request.user
       creator = user.customer_profile
-      company = creator.company
+      team = creator.team
       investment_size = self.request.query_params.get('investment_size', None)
       target_return = self.request.query_params.get('target_return', None)
 
-      queryset = filter_contact_queryset(company, creator, investment_size, target_return)
+      queryset = filter_contact_queryset(team, creator, investment_size, target_return)
     except:  # TODO: break down the exceptions and log them
       queryset = Contact.objects.none()
 
@@ -113,11 +113,11 @@ class DownloadContactCompanyViewSet(viewsets.ReadOnlyModelViewSet):
     try:
       user = self.request.user
       creator = user.customer_profile
-      company = creator.company
+      team = creator.team
       investment_size = self.request.query_params.get('investment_size', None)
       target_return = self.request.query_params.get('target_return', None)
 
-      queryset = filter_contact_queryset(company, creator, investment_size, target_return)
+      queryset = filter_contact_queryset(team, creator, investment_size, target_return)
     except:  # TODO: break down the exceptions and log them
       queryset = Contact.objects.none()
 

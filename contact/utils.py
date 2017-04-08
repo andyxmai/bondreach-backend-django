@@ -37,11 +37,11 @@ def get_upcoming_follow_up(begin_date, frequency):
   else:
     return None
 
-def filter_contact_queryset(company, creator, investment_size, target_return):
+def filter_contact_queryset(team, creator, investment_size, target_return):
   from contact.models import Contact
   
-  if company and company.allow_contact_sharing:
-    queryset = Contact.objects.filter(creator__company_id=company.id)
+  if team:
+    queryset = Contact.objects.filter(creator__team_id=team.id)
   else:
     queryset = Contact.objects.filter(creator=creator)
   
