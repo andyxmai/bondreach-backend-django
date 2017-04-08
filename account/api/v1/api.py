@@ -62,6 +62,14 @@ class OutlookAuth(APIView):
       customer = user.customer_profile
     except User.DoesNotExist:
       user = User.objects.create_user(email)
+      
+      # Save user's name
+      first_name = request.data.get('first_name', '')
+      last_name = request.data.get('last_name', '')
+      user.first_name = first_name
+      user.last_name = last_name
+      user.save()
+      
       outlook_user = OutlookUser(unique_identifier=unique_identifier, user=user)
       outlook_user.save()
       customer = Customer(user=user)
