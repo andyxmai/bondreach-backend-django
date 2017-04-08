@@ -23,7 +23,6 @@ class CustomerSerializer(serializers.ModelSerializer):
     fields = ('id', 'user', 'team')
 
   def update(self, instance, validated_data):
-    print(validated_data)
     team_data = validated_data.pop('team', None)
 
     for key, val in validated_data.items():
