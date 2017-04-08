@@ -3,6 +3,7 @@ import requests
 from customer.models import Customer
 from customer.api.v1.serializers import CustomerSerializer
 from rest_framework.decorators import list_route
+from rest_framework.filters import SearchFilter
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions, status, viewsets
@@ -46,8 +47,10 @@ class BetaList(APIView):
 class CustomerViewSet(viewsets.ModelViewSet):
 
   serializer_class = CustomerSerializer
+  filter_backends = (SearchFilter,)
   queryset = Customer.objects.all()
-  
+  search_fields = ('$user__email',)
+
   @list_route()
   def me(self, request, *args, **kwargs):
     user_id = request.user.id
