@@ -22,7 +22,7 @@ class NewsFeedViewSet(viewsets.ReadOnlyModelViewSet):
       else:
         contacts = Contact.objects.filter(creator=creator)
 
-      queryset = NewsFeed.objects.filter(company__in=contacts.values_list('company', flat=True))
+      queryset = NewsFeed.objects.filter(company__in=contacts.values_list('company', flat=True)).order_by('-date_published')
     except:  # TODO (Andy): break down the exceptions and log them
       queryset = NewsFeed.objects.none()
 
