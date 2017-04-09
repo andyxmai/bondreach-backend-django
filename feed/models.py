@@ -9,7 +9,7 @@ class NewsFeed(models.Model):
 
   company = models.CharField(max_length=200)
   name = models.TextField()
-  link = models.TextField()
+  url = models.TextField()
   date_published = models.DateTimeField()
 
   def __str__(self):
