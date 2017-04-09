@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'account',
     'contact',
     'customer',
+    'feed',
     'investment',
     'region',
 

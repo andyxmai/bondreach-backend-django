@@ -22,6 +22,7 @@ urlpatterns = [
   url(r'', include('account.api.urls')),
   url(r'', include('contact.api.urls')),
   url(r'', include('customer.api.urls')),
+  url(r'', include('feed.api.urls')),
   url(r'', include('investment.api.urls')),
   url(r'', include('region.api.urls')),
   url(r'^admin/', admin.site.urls),
