@@ -8,4 +8,4 @@ class NewsFeedSerializer(serializers.ModelSerializer):
   
   class Meta:
     model = NewsFeed
-    fields = ('id', 'company', 'name', 'link', 'date_published')
+    fields = ('id', 'company', 'name', 'url', 'date_published')
