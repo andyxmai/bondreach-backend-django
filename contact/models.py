@@ -43,6 +43,9 @@ class Contact(models.Model):
   def __str__(self):
     return self.first_name + " " + self.last_name
 
+  def get_full_name(self):
+    return '{} {}'.format(self.first_name, self.last_name).strip()
+
   def get_upcoming_follow_up(self):
     follow_up = FollowUp.objects.filter(contact=self).first()
     if follow_up:

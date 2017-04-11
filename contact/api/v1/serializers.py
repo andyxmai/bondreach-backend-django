@@ -1,4 +1,9 @@
 from contact.models import Contact, FollowUp, Correspondence
+from contact.events import (create_new_contact_team_event,
+  create_update_contact_team_event, create_follow_up_team_event
+)
+from customer.models import Customer
+from event.models import TeamEvent, TeamEventCategory
 from investment.models import InvestmentType
 from region.models import Region
 from investment.api.v1.serializers import InvestmentTypeSerializer
@@ -11,6 +16,13 @@ class FollowUpSerializer(serializers.ModelSerializer):
     model = FollowUp
     fields = ('id', 'begin_date', 'frequency', 'contact')
 
+  def create(self, validated_data): 
+    follow_up = FollowUp.objects.create(**validated_data)
+
+    user = self.context['request'].user
+    create_follow_up_team_event(user, follow_up)
+    
+    return follow_up
 
 class CorrespondenceSerializer(serializers.ModelSerializer):
   class Meta:
@@ -25,7 +37,7 @@ class ContactSerializer(serializers.ModelSerializer):
   correspondences = CorrespondenceSerializer(required=False, many=True, read_only=True)
 
   def get_upcoming_follow_up(self, obj):
-        return obj.get_upcoming_follow_up()
+    return obj.get_upcoming_follow_up()
 
   class Meta:
     model = Contact
@@ -50,6 +62,9 @@ class ContactSerializer(serializers.ModelSerializer):
       investment_type = InvestmentType.objects.get(id=investment_type_preference_data['id'])
       contact.investment_type_preferences.add(investment_type)
     
+    user = self.context['request'].user
+    create_new_contact_team_event(user, contact)
+
     return contact
 
   def update(self, instance, validated_data):
@@ -73,6 +88,9 @@ class ContactSerializer(serializers.ModelSerializer):
         investment_type = InvestmentType.objects.get(id=investment_type_preference_data['id'])
         instance.investment_type_preferences.add(investment_type)
     
+    user = self.context['request'].user
+    create_update_contact_team_event(user, instance)
+
     return instance
 
 
