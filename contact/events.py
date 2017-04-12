@@ -9,6 +9,7 @@ def create_new_contact_team_event(user, contact):
     metadata = {
       'new_contact_id': str(contact.id),
       'new_contact_full_name': contact.get_full_name(),
+      'new_contact_company': contact.company,
       'event_category_name': team_event_category.name,
       'creator_name': creator.user.get_full_name(),
     }
@@ -30,6 +31,7 @@ def create_update_contact_team_event(user, contact):
     metadata = {
       'contact_id': str(contact.id),
       'contact_full_name': contact.get_full_name(),
+      'contact_company': contact.company,
       'event_category_name': team_event_category.name,
       'creator_name': creator.user.get_full_name(),
     }
@@ -52,6 +54,7 @@ def create_follow_up_team_event(user, follow_up):
     metadata = {
       'contact_id': str(contact.id),
       'contact_full_name': contact.get_full_name(),
+      'contact_company': contact.company,
       'follow_up_date': follow_up.begin_date.isoformat(),
       'event_category_name': team_event_category.name,
       'creator_name': creator.user.get_full_name(),
