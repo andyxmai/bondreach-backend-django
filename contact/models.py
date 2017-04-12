@@ -85,3 +85,6 @@ class Correspondence(models.Model):
 
   def __str__(self):
     return "{} {} ({})".format(self.contact.first_name, self.contact.last_name, self.correspondence_type)
+
+  class Meta:
+    ordering = ('-date',)

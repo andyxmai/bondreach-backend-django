@@ -138,5 +138,5 @@ class FollowUpViewSet(viewsets.ModelViewSet):
 
 
 class CorrespondenceViewSet(viewsets.ModelViewSet):
-  queryset = Correspondence.objects.all()
+  queryset = Correspondence.objects.all().order_by('-date')
   serializer_class = CorrespondenceSerializer
