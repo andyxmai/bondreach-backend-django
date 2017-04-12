@@ -80,5 +80,8 @@ class Correspondence(models.Model):
   item_id = models.TextField(blank=True)
   contact = models.ForeignKey('Contact', related_name='correspondences', null=True, on_delete=models.CASCADE)
 
+  subject = models.TextField(blank=True)
+  preview = models.TextField(blank=True)
+
   def __str__(self):
     return "{} {} ({})".format(self.contact.first_name, self.contact.last_name, self.correspondence_type)
